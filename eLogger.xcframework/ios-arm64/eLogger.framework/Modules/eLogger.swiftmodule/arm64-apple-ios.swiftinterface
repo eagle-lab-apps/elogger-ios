@@ -1,0 +1,192 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 6.0 effective-5.10 (swiftlang-6.0.0.9.10 clang-1600.0.26.2)
+// swift-module-flags: -target arm64-apple-ios11.0 -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -enable-bare-slash-regex -module-name eLogger
+import CoreData
+@_exported import Foundation
+import Network
+import Swift
+import SystemConfiguration
+import UIKit
+import _Concurrency
+import _StringProcessing
+import _SwiftConcurrencyShims
+@_exported import eLogger
+import os.log
+import os
+extension eLogger.ELog {
+  public enum LogLevel : Swift.Int, Swift.Comparable {
+    case low
+    case info
+    case medium
+    case high
+    case blocker
+    public static func < (lhs: eLogger.ELog.LogLevel, rhs: eLogger.ELog.LogLevel) -> Swift.Bool
+    public init?(rawValue: Swift.Int)
+    public typealias RawValue = Swift.Int
+    public var rawValue: Swift.Int {
+      get
+    }
+  }
+}
+public enum ELog {
+  @_hasMissingDesignatedInitializers public class RealRemoteELogger : eLogger.ELog.RemoteELoggerAPI {
+    public func log(level: eLogger.ELog.LogLevel, message: Swift.String, completion: ((Swift.Result<Swift.Void, any Swift.Error>) -> Swift.Void)? = nil)
+    @objc deinit
+  }
+}
+extension eLogger.ELog {
+  @_hasMissingDesignatedInitializers public class RemoteELogger {
+    public static var shared: any eLogger.ELog.RemoteELoggerAPI {
+      get
+    }
+    public static func `init`() -> eLogger.ELog.RemoteELogger.Builder
+    @_hasMissingDesignatedInitializers public class Builder : eLogger.ELog.RemoteELoggerAPI {
+      @discardableResult
+      public func verboseLogging() -> eLogger.ELog.RemoteELogger.Builder
+      public func low(message: Swift.String, completion: ((Swift.Result<Swift.Void, any Swift.Error>) -> Swift.Void)?)
+      public func info(message: Swift.String, completion: ((Swift.Result<Swift.Void, any Swift.Error>) -> Swift.Void)?)
+      public func medium(message: Swift.String, completion: ((Swift.Result<Swift.Void, any Swift.Error>) -> Swift.Void)?)
+      public func high(message: Swift.String, completion: ((Swift.Result<Swift.Void, any Swift.Error>) -> Swift.Void)?)
+      public func blocker(message: Swift.String, completion: ((Swift.Result<Swift.Void, any Swift.Error>) -> Swift.Void)?)
+      public func log(level: eLogger.ELog.LogLevel, message: Swift.String, completion: ((Swift.Result<Swift.Void, any Swift.Error>) -> Swift.Void)?)
+      @objc deinit
+    }
+    @objc deinit
+  }
+  public protocol RemoteELoggerAPI {
+    func low(_ message: Swift.String, completion: ((Swift.Result<Swift.Void, any Swift.Error>) -> Swift.Void)?)
+    func info(_ message: Swift.String, completion: ((Swift.Result<Swift.Void, any Swift.Error>) -> Swift.Void)?)
+    func medium(_ message: Swift.String, completion: ((Swift.Result<Swift.Void, any Swift.Error>) -> Swift.Void)?)
+    func high(_ message: Swift.String, completion: ((Swift.Result<Swift.Void, any Swift.Error>) -> Swift.Void)?)
+    func blocker(_ message: Swift.String, completion: ((Swift.Result<Swift.Void, any Swift.Error>) -> Swift.Void)?)
+    func log(level: eLogger.ELog.LogLevel, message: Swift.String, completion: ((Swift.Result<Swift.Void, any Swift.Error>) -> Swift.Void)?)
+  }
+}
+extension eLogger.ELog.RemoteELoggerAPI {
+  public func low(_ message: Swift.String, completion: ((Swift.Result<Swift.Void, any Swift.Error>) -> Swift.Void)? = nil)
+  public func info(_ message: Swift.String, completion: ((Swift.Result<Swift.Void, any Swift.Error>) -> Swift.Void)? = nil)
+  public func medium(_ message: Swift.String, completion: ((Swift.Result<Swift.Void, any Swift.Error>) -> Swift.Void)? = nil)
+  public func high(_ message: Swift.String, completion: ((Swift.Result<Swift.Void, any Swift.Error>) -> Swift.Void)? = nil)
+  public func blocker(_ message: Swift.String, completion: ((Swift.Result<Swift.Void, any Swift.Error>) -> Swift.Void)? = nil)
+}
+extension Swift.Array {
+  @inlinable public mutating func remove(safe index: Swift.Int) {
+        guard index < count else { return }
+        remove(at: index)
+    }
+}
+public class ELogger {
+  public static let shared: eLogger.ELogger
+  public init(config: eLogger.ELogger.Configuration)
+  @objc deinit
+}
+extension eLogger.ELogger {
+  public struct BatchingConfiguration {
+    public init(maxIntervalThreshold: Foundation.TimeInterval, minCountThreshold: Swift.Int)
+    public static let defaultFileBatchingConfiguration: eLogger.ELogger.BatchingConfiguration
+  }
+  public enum RemoteLoggingMode {
+    case immediate
+    case manual
+    public static func == (a: eLogger.ELogger.RemoteLoggingMode, b: eLogger.ELogger.RemoteLoggingMode) -> Swift.Bool
+    public func hash(into hasher: inout Swift.Hasher)
+    public var hashValue: Swift.Int {
+      get
+    }
+  }
+  public enum LoggingMode {
+    case immediate
+    case batching(eLogger.ELogger.BatchingConfiguration)
+    case manual
+  }
+  public struct Configuration {
+    public init(minLogLevel: eLogger.ELog.LogLevel = .low, consoleOutput: eLogger.ELogger.ConsoleOutput? = ConsoleOutput(), remoteOutput: eLogger.ELogger.RemoteOutput? = nil, fileOutput: eLogger.ELogger.FileOutput? = nil, verboseLogging: Swift.Bool = false)
+    public static let `default`: eLogger.ELogger.Configuration
+  }
+  public struct ConsoleOutput {
+    public init()
+  }
+  public struct RemoteOutput {
+    public init(loggingMode: eLogger.ELogger.RemoteLoggingMode, retryMechanismOn: Swift.Bool = true)
+    public static let `default`: eLogger.ELogger.RemoteOutput
+  }
+  public struct FileOutput {
+    public init(loggingMode: eLogger.ELogger.LoggingMode)
+    public static let `default`: eLogger.ELogger.FileOutput
+  }
+}
+extension eLogger.ELogger {
+  public func low(_ message: Swift.String)
+  public func info(_ message: Swift.String)
+  public func medium(_ message: Swift.String)
+  public func high(_ message: Swift.String)
+  public func blocker(_ message: Swift.String)
+  public func flush()
+  public func log(level: eLogger.ELog.LogLevel, message: Swift.String)
+}
+@_inheritsConvenienceInitializers @objc(PendingFileLog) public class PendingFileLog : CoreData.NSManagedObject {
+  @objc override dynamic public init(entity: CoreData.NSEntityDescription, insertInto context: CoreData.NSManagedObjectContext?)
+  @objc deinit
+}
+extension eLogger.PendingFileLog {
+  @nonobjc public class func fetchRequest() -> CoreData.NSFetchRequest<eLogger.PendingFileLog>
+  @objc @NSManaged dynamic public var content: Swift.String? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var createdAt: Foundation.Date? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var loggerId: Swift.String? {
+    @objc get
+    @objc set
+  }
+}
+@_inheritsConvenienceInitializers @objc(PendingRemoteLog) public class PendingRemoteLog : CoreData.NSManagedObject {
+  @objc override dynamic public init(entity: CoreData.NSEntityDescription, insertInto context: CoreData.NSManagedObjectContext?)
+  @objc deinit
+}
+extension eLogger.PendingRemoteLog {
+  @nonobjc public class func fetchRequest() -> CoreData.NSFetchRequest<eLogger.PendingRemoteLog>
+  @objc @NSManaged dynamic public var bundleId: Swift.String? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var bundleVersion: Swift.String? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var createdAt: Foundation.Date? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var loggerId: Swift.String? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var messageText: Swift.String? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var messageType: Swift.String? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var productName: Swift.String? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var systemType: Swift.String? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var systemVersion: Swift.String? {
+    @objc get
+    @objc set
+  }
+}
+extension eLogger.ELog.LogLevel : Swift.Hashable {}
+extension eLogger.ELog.LogLevel : Swift.RawRepresentable {}
+extension eLogger.ELogger.RemoteLoggingMode : Swift.Equatable {}
+extension eLogger.ELogger.RemoteLoggingMode : Swift.Hashable {}

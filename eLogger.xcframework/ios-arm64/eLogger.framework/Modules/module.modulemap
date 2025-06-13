@@ -1,0 +1,6 @@
+framework module eLogger {
+  umbrella header "eLogger.h"
+  export *
+
+  module * { export * }
+}
